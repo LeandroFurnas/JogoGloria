@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include <windows.h>
+#include <unistd.h> // para usleep
 #include <vector>
 #include <string>
 using namespace std;
@@ -85,7 +85,7 @@ void CriarCasas() {
 }
 
 void MostrarTabuleiro(const Jogador &j1, const Jogador &j2) {
-    cout << "\n=== TABULEIRO ===\n";
+    cout << "\n    TABULEIRO \n";
     for (int i = 0; i < TAM; i++) {
         if (i == j1.pos)
             cout << "[" << j1.cor << "J" << "\033[0m]";
@@ -96,7 +96,7 @@ void MostrarTabuleiro(const Jogador &j1, const Jogador &j2) {
         if ((i + 1) % 10 == 0)
             cout << "\n";
     }
-    cout << "=================\n";
+    cout << "\n";
 
     cout << "\nPONTUAÇÃO:\n";
     cout << j1.cor << j1.nome << "\033[0m: " << j1.pontos << " Casas\n";
@@ -147,12 +147,12 @@ int AnimarDado() {
     int valor = 1;
     for (int i = 0; i < 8; i++) {
         valor = (rand() % 6) + 1;
-        system("cls");
+        system("clear");
         MostrarDado(valor);
-        Sleep(100);
+        usleep(100000); // substituindo Sleep(100)
     }
 
-    system("cls");
+    system("clear");
     MostrarDado(valor);
 
     cout << "\nPressione Enter para continuar...";
@@ -172,29 +172,29 @@ void Mover(Jogador &j, int valor) {
     cout << j.cor << j.nome << "\033[0m" << " caiu na casa " << NomeCasa(c) << "\n";
 
     switch (c) {
-        case CasaTipo::Avanca3:
+        case Avanca3:
             j.pos += 3;
             if (j.pos >= TAM) j.pos = TAM - 1;
             cout << "Avancou 3 casas!\n";
             break;
 
-        case CasaTipo::Retorna3:
+        case Retorna3:
             j.pos -= 3;
             if (j.pos < 0) j.pos = 0;
             cout << "Retornou 3 casas!\n";
             break;
 
-        case CasaTipo::PerdeVez:
+        case PerdeVez:
             j.perdeVez = true;
             cout << "Vai perder a proxima vez!\n";
             break;
 
-        case CasaTipo::JogarDenovo:
+        case JogarDenovo:
             j.perdeVez = false;
             cout << "Vai jogar de novo!\n";
             break;
 
-        case CasaTipo::Esperar:
+        case Esperar:
             j.perdeVez = true;
             cout << "Vai esperar uma rodada!\n";
             break;
@@ -223,8 +223,8 @@ int main() {
     int rodada = 1;
 
     while (true) {
-        system("cls");
-        cout << "=== RODADA " << rodada << " ===\n";
+        system("clear");
+        cout << "    RODADA " << rodada << " \n";
         MostrarTabuleiro(azul, vermelho);
 
         if (!azul.perdeVez) {
@@ -236,7 +236,7 @@ int main() {
         } else {
             cout << azul.nome << " esta a perder a vez...\n";
             azul.perdeVez = false;
-            Sleep(1000);
+            usleep(1000000); // substituindo Sleep(1000)
         }
 
         if (azul.pos >= TAM - 1) {
@@ -244,8 +244,8 @@ int main() {
             break;
         }
 
-        Sleep(500);
-        system("cls");
+        usleep(500000); // substituindo Sleep(500)
+        system("clear");
         MostrarTabuleiro(azul, vermelho);
 
         if (!vermelho.perdeVez) {
@@ -257,7 +257,7 @@ int main() {
         } else {
             cout << vermelho.nome << " esta a perder a vez...\n";
             vermelho.perdeVez = false;
-            Sleep(1000);
+            usleep(1000000); // substituindo Sleep(1000)
         }
 
         if (vermelho.pos >= TAM - 1) {
@@ -265,7 +265,7 @@ int main() {
             break;
         }
 
-        Sleep(1500);
+        usleep(1500000); // substituindo Sleep(1500)
         rodada++;
     }
 
@@ -273,3 +273,4 @@ int main() {
     waitEnter();
     return 0;
 }
+ 
